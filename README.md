@@ -1,4 +1,4 @@
-![Icon](./marqueeLabel-icon.webp)
+<img src="./marqueeLabel-icon.webp" width="30%"/>
 # MarqueeLabel
 MarqueeLabel is a library used to create moving text labels in iOS applications.
 
@@ -10,10 +10,7 @@ MarqueeLabel is a library used to create moving text labels in iOS applications.
 * This project is managed using the Swift Package Manager. Therefore, you can add this library to your project using the Swift Package Manager.
 
 ## Usage
-You can create moving text labels using the MarqueeLabelUI struct. This struct conforms to the UIViewRepresentable protocol and creates and updates labels through the makeUIView(context:) and updateUIView(_:context:) methods.
-
-Example Project
-The Example/MarqueeLabelExample directory contains an example project that demonstrates how to use this library. You can learn how to use MarqueeLabelUI by referring to this project
+Update soon
 
 ## License
 MIT License

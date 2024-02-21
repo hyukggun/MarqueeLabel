@@ -11,40 +11,76 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let marqueeLabel = MarqueeLabel()
+    let defaultMarqueeLabel = MarqueeLabel()
+    
+    let fullLengthMarqueeLabel = MarqueeLabel()
     
     let pinnedMarqueeLabel = MarqueeLabel()
     
-    let startButton = UIButton()
+    let startDefaultMarqueeButton = UIButton()
     
-    let stopButton = UIButton()
+    let stopDefaultMarqueeButton = UIButton()
+    
+    let startFullLengthMarqueeButton = UIButton()
+    
+    let stopFullLengthMarqueeButton = UIButton()
     
     let nextPageButton = UIButton()
+    
+    private let lorem_ipsum_sample_text = "Lorem ipsum dolor sit amet, stet ponderum tractatos id quo, ex quo malis nominavi. "
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        marqueeLabel.translatesAutoresizingMaskIntoConstraints = false
-        startButton.translatesAutoresizingMaskIntoConstraints = false
-        stopButton.translatesAutoresizingMaskIntoConstraints = false
+        defaultMarqueeLabel.translatesAutoresizingMaskIntoConstraints = false
+        fullLengthMarqueeLabel.translatesAutoresizingMaskIntoConstraints = false
+        startDefaultMarqueeButton.translatesAutoresizingMaskIntoConstraints = false
+        stopDefaultMarqueeButton.translatesAutoresizingMaskIntoConstraints = false
+        startFullLengthMarqueeButton.translatesAutoresizingMaskIntoConstraints = false
+        stopFullLengthMarqueeButton.translatesAutoresizingMaskIntoConstraints = false
         nextPageButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(marqueeLabel)
-        view.addSubview(startButton)
-        view.addSubview(stopButton)
+        view.addSubview(defaultMarqueeLabel)
+        view.addSubview(fullLengthMarqueeLabel)
+        view.addSubview(startDefaultMarqueeButton)
+        view.addSubview(stopDefaultMarqueeButton)
+        view.addSubview(startFullLengthMarqueeButton)
+        view.addSubview(stopFullLengthMarqueeButton)
         view.addSubview(nextPageButton)
         
-        marqueeLabel.text = "marqueeLabel test"
+        defaultMarqueeLabel.text = lorem_ipsum_sample_text
+        defaultMarqueeLabel.numberOfLines = 1
+        defaultMarqueeLabel.clipsToBounds = true
+        
+        fullLengthMarqueeLabel.text = lorem_ipsum_sample_text
+        fullLengthMarqueeLabel.numberOfLines = 1
+        fullLengthMarqueeLabel.clipsToBounds = true
+        fullLengthMarqueeLabel.subLabelSizeStrategy = FullLengthSubLabelSizeStrategy()
+        
         pinnedMarqueeLabel.text = "pinned MarqueeLabel"
         
-        startButton.setTitle("play marquee", for: .normal)
-        startButton.setTitleColor(.black, for: .normal)
-        startButton.layer.borderWidth = 1
-        startButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
+        startDefaultMarqueeButton.setTitle("play default marquee", for: .normal)
+        startDefaultMarqueeButton.setTitleColor(.black, for: .normal)
+        startDefaultMarqueeButton.layer.borderWidth = 1
+        startDefaultMarqueeButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
+        
+        stopDefaultMarqueeButton.setTitle("stop default marquee", for: .normal)
+        stopDefaultMarqueeButton.setTitleColor(.black, for: .normal)
+        stopDefaultMarqueeButton.layer.borderWidth = 1
+        stopDefaultMarqueeButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
         
         
-        stopButton.setTitle("stop marquee", for: .normal)
-        stopButton.setTitleColor(.black, for: .normal)
-        stopButton.layer.borderWidth = 1
-        stopButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
+        startFullLengthMarqueeButton.setTitle("play full length marquee", for: .normal)
+        startFullLengthMarqueeButton.titleLabel?.font = .systemFont(ofSize: 12)
+        startFullLengthMarqueeButton.titleLabel?.sizeToFit()
+        startFullLengthMarqueeButton.setTitleColor(.black, for: .normal)
+        startFullLengthMarqueeButton.layer.borderWidth = 1
+        startFullLengthMarqueeButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
+        
+        stopFullLengthMarqueeButton.setTitle("stop full Length marquee", for: .normal)
+        stopFullLengthMarqueeButton.titleLabel?.font = .systemFont(ofSize: 12)
+        stopFullLengthMarqueeButton.titleLabel?.sizeToFit()
+        stopFullLengthMarqueeButton.setTitleColor(.black, for: .normal)
+        stopFullLengthMarqueeButton.layer.borderWidth = 1
+        stopFullLengthMarqueeButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
         
         nextPageButton.setTitle("next Page Button", for: .normal)
         nextPageButton.setTitleColor(.black, for: .normal)
@@ -52,27 +88,42 @@ class ViewController: UIViewController {
         nextPageButton.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.12).cgColor
         
         NSLayoutConstraint.activate([
-            marqueeLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
-            marqueeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            marqueeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            marqueeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-            marqueeLabel.heightAnchor.constraint(equalToConstant: 100),
+            defaultMarqueeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            defaultMarqueeLabel.widthAnchor.constraint(equalToConstant: 200),
+            defaultMarqueeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            defaultMarqueeLabel.heightAnchor.constraint(equalToConstant: 50),
             
-            startButton.topAnchor.constraint(equalTo: marqueeLabel.bottomAnchor, constant: 100),
-            startButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            startButton.heightAnchor.constraint(equalToConstant: 50),
+            startDefaultMarqueeButton.topAnchor.constraint(equalTo: defaultMarqueeLabel.bottomAnchor, constant: 20),
+            startDefaultMarqueeButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
+            startDefaultMarqueeButton.heightAnchor.constraint(equalToConstant: 50),
             
-            stopButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: 100),
-            stopButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stopButton.heightAnchor.constraint(equalToConstant: 50),
+            stopDefaultMarqueeButton.topAnchor.constraint(equalTo: defaultMarqueeLabel.bottomAnchor, constant: 20),
+            stopDefaultMarqueeButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
+            stopDefaultMarqueeButton.heightAnchor.constraint(equalToConstant: 50),
             
-            nextPageButton.topAnchor.constraint(equalTo: stopButton.bottomAnchor, constant: 100),
+            fullLengthMarqueeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            fullLengthMarqueeLabel.widthAnchor.constraint(equalToConstant: 200),
+            fullLengthMarqueeLabel.topAnchor.constraint(equalTo: startDefaultMarqueeButton.bottomAnchor, constant: 20),
+            fullLengthMarqueeLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            startFullLengthMarqueeButton.topAnchor.constraint(equalTo: fullLengthMarqueeLabel.bottomAnchor, constant: 20),
+            startFullLengthMarqueeButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
+            startFullLengthMarqueeButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            stopFullLengthMarqueeButton.topAnchor.constraint(equalTo: fullLengthMarqueeLabel.bottomAnchor, constant: 20),
+            stopFullLengthMarqueeButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
+            stopFullLengthMarqueeButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            
+            nextPageButton.topAnchor.constraint(equalTo: stopFullLengthMarqueeButton.bottomAnchor, constant: 100),
             nextPageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextPageButton.heightAnchor.constraint(equalToConstant: 50),
         ])
         
-        startButton.addTarget(self, action: #selector(startMarquee), for: .touchUpInside)
-        stopButton.addTarget(self, action: #selector(stopMarquee), for: .touchUpInside)
+        startDefaultMarqueeButton.addTarget(self, action: #selector(startMarquee), for: .touchUpInside)
+        stopDefaultMarqueeButton.addTarget(self, action: #selector(stopMarquee), for: .touchUpInside)
+        startFullLengthMarqueeButton.addTarget(self, action: #selector(startFullLengthMarquee), for: .touchUpInside)
+        stopFullLengthMarqueeButton.addTarget(self, action: #selector(stopFullLengthMarquee), for: .touchUpInside)
         nextPageButton.addTarget(self, action: #selector(navigateToNextPage), for: .touchUpInside)
         
         view.addSubview(pinnedMarqueeLabel)
@@ -90,12 +141,22 @@ class ViewController: UIViewController {
     
     @objc
     private func startMarquee() {
-        marqueeLabel.start()
+        defaultMarqueeLabel.start()
     }
     
     @objc
     private func stopMarquee() {
-        marqueeLabel.stop()
+        defaultMarqueeLabel.stop()
+    }
+    
+    @objc
+    private func startFullLengthMarquee() {
+        fullLengthMarqueeLabel.start()
+    }
+    
+    @objc
+    private func stopFullLengthMarquee() {
+        fullLengthMarqueeLabel.stop()
     }
     
     @objc

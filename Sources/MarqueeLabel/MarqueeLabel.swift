@@ -22,6 +22,12 @@ public class MarqueeLabel: UILabel {
     
     public var duration: Double = 7.5
     
+    public var subLabelSizeStrategy: SubLabelSizeStrategy? {
+        didSet {
+            setSubLabelFrame()
+        }
+    }
+    
     override public var text: String? {
         get {
             subLabel.text
@@ -66,7 +72,7 @@ public class MarqueeLabel: UILabel {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        subLabel.frame = bounds
+        setSubLabelFrame()
         createAnimation()
     }
 
@@ -106,6 +112,14 @@ public class MarqueeLabel: UILabel {
     public func stop() {
         textColor = .black
         toggleSubLabelState(.inactive)
+    }
+    
+    private func setSubLabelFrame() {
+        if let subLabelSizeStrategy {
+            subLabel.frame = subLabelSizeStrategy.sizeFunction(subLabel, bounds)
+        } else {
+            subLabel.frame = defaultSubSizeStrategy.sizeFunction(subLabel, bounds)
+        }
     }
     
     private func updateAndScroll() {

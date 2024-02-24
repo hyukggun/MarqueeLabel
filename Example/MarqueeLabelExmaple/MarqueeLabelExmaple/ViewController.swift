@@ -5,8 +5,9 @@
 //  Created by 최최광현 on 2/20/24.
 //
 
-import SwiftUI
 import MarqueeLabel
+import SnapKit
+import SwiftUI
 import UIKit
 
 class ViewController: UIViewController {
@@ -31,6 +32,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        defaultMarqueeLabel.animationStrategy = LeftToRightMarqueeAnimationStrategy(speed: 30, delay: 2)
+        fullLengthMarqueeLabel.animationStrategy = RightToLeftMarqueeAnimationStrategy(speed: 50, delay: 3)
+        
         defaultMarqueeLabel.translatesAutoresizingMaskIntoConstraints = false
         fullLengthMarqueeLabel.translatesAutoresizingMaskIntoConstraints = false
         startDefaultMarqueeButton.translatesAutoresizingMaskIntoConstraints = false

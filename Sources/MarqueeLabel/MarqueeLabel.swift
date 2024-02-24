@@ -12,7 +12,7 @@ public class MarqueeLabel: UILabel {
         case inactive
     }
     
-    private var subLabel = UILabel()
+    private(set) var subLabel = UILabel()
     
     private var animationKey: String { "marqueeAnimation" }
     
@@ -20,13 +20,17 @@ public class MarqueeLabel: UILabel {
     
     public var autoScroll: Bool = false
     
-    public var duration: Double = 7.5
+    public var scrollSpeed: Double = 30
+
+    public var bufferSecond: Double = 2
     
     public var subLabelSizeStrategy: SubLabelSizeStrategy? {
         didSet {
             setSubLabelFrame()
         }
     }
+    
+    public var animationStrategy: (any MarqueeAnimationStrategy)?
     
     override public var text: String? {
         get {
@@ -77,15 +81,8 @@ public class MarqueeLabel: UILabel {
     }
 
     private func createAnimation() {
-        guard subLabel.layer.animation(forKey: animationKey) == nil else { return }
-        let animation = CABasicAnimation(keyPath: "position.x")
-        let homeOrigin = frame.maxX
-        let awayOrigin = -(subLabel.frame.size.width / 2)
-        animation.fromValue = homeOrigin
-        animation.toValue = awayOrigin
-        animation.duration = duration
-        animation.repeatCount = .infinity
-        animation.isRemovedOnCompletion = false
+        guard let animationStrategy, subLabel.layer.animation(forKey: animationKey) == nil else { return }
+        let animation = animationStrategy.animation(self)
         subLabel.layer.speed = .zero
         subLabel.layer.add(animation, forKey: animationKey)
     }
@@ -120,38 +117,6 @@ public class MarqueeLabel: UILabel {
         } else {
             subLabel.frame = defaultSubSizeStrategy.sizeFunction(subLabel, bounds)
         }
-    }
-    
-    private func updateAndScroll() {
-        let expectedLabelSize = subLabel.desiredSize()
-        invalidateIntrinsicContentSize()
-        subLabel.textColor = super.textColor
-        subLabel.textAlignment = super.textAlignment
-        subLabel.lineBreakMode = super.lineBreakMode
-        subLabel.adjustsFontSizeToFitWidth = super.adjustsFontSizeToFitWidth
-        subLabel.minimumScaleFactor = super.minimumScaleFactor
-    }
-}
-
-
-fileprivate extension UILabel {
-    func desiredSize() -> CGSize {
-        // Bound the expected size
-        let maximumLabelSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        // Calculate the expected size
-        var expectedLabelSize = self.sizeThatFits(maximumLabelSize)
-        
-        #if os(tvOS)
-            // Sanitize width to 16384.0 (largest width a UILabel will draw on tvOS)
-            expectedLabelSize.width = min(expectedLabelSize.width, 16384.0)
-        #else
-            // Sanitize width to 5461.0 (largest width a UILabel will draw on an iPhone 6S Plus)
-            expectedLabelSize.width = min(expectedLabelSize.width, 5461.0)
-        #endif
-
-        // Adjust to own height (make text baseline match normal label)
-        expectedLabelSize.height = bounds.size.height
-        return expectedLabelSize
     }
 }
 #endif

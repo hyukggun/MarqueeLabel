@@ -15,7 +15,7 @@ struct MarqueeLabelExmaplePage: View {
     
     var body: some View {
         VStack {
-        MarqueeLabelUI(title: "test", play: $playing)
+            MarqueeText(title: "lorem ipsum", animation: LeftToRightMarqueeAnimationStrategy(), play: $playing)
             Button(action: {
                 playing = true
             }, label: {
